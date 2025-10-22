@@ -56,3 +56,5 @@ pip-delete-this-directory.txt
 # Google Sheets credentials (sensitive!)
 *credentials*.json
 *service-account*.json
+
+.vercel
