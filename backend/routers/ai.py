@@ -14,10 +14,10 @@ def get_anthropic_client():
     return Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
 
 @router.post("/generate-report")
-async def generate_ai_report(current_user: dict = Depends(get_current_user)):
+async def generate_ai_report(current_user: str = Depends(get_current_user)):
     """AI 환경 기여 리포트 생성"""
     db = get_db()
-    user_id = current_user["user_id"]
+    user_id = current_user
 
     try:
         # 사용자 활동 데이터 조회
@@ -89,8 +89,8 @@ async def generate_ai_report(current_user: dict = Depends(get_current_user)):
         # Claude API 호출
         anthropic_client = get_anthropic_client()
         message = anthropic_client.messages.create(
-            model="claude-haiku-4.5-20250925",
-            max_tokens=1024,
+            model="claude-4-0-sonnet-20250514",
+            max_tokens=2048,
             messages=[
                 {"role": "user", "content": prompt}
             ]
