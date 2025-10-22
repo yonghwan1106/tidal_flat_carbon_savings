@@ -88,8 +88,9 @@ async def generate_ai_report(current_user: str = Depends(get_current_user)):
 
         # Claude API 호출
         anthropic_client = get_anthropic_client()
+        model = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-20250514")
         message = anthropic_client.messages.create(
-            model="claude-4-0-sonnet-20250514",
+            model=model,
             max_tokens=2048,
             messages=[
                 {"role": "user", "content": prompt}
