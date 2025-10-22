@@ -4,13 +4,14 @@ AI 리포트 생성 API 라우터 (Claude API)
 from fastapi import APIRouter, HTTPException, Depends
 from database import get_db
 import os
-from anthropic import Anthropic
 from core.auth import get_current_user
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 
-# Claude API 클라이언트 초기화
-anthropic_client = Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
+# Claude API 클라이언트 지연 로딩
+def get_anthropic_client():
+    from anthropic import Anthropic
+    return Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
 
 @router.post("/generate-report")
 async def generate_ai_report(current_user: dict = Depends(get_current_user)):
@@ -86,6 +87,7 @@ async def generate_ai_report(current_user: dict = Depends(get_current_user)):
 """
 
         # Claude API 호출
+        anthropic_client = get_anthropic_client()
         message = anthropic_client.messages.create(
             model="claude-haiku-4.5-20250925",
             max_tokens=1024,
