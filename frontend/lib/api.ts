@@ -167,6 +167,13 @@ class ApiClient {
   async getMonthlyTrend(): Promise<any> {
     return this.request('/api/dashboard/monthly-trend')
   }
+
+  // AI APIs
+  async generateAIReport(): Promise<any> {
+    return this.request('/api/ai/generate-report', {
+      method: 'POST',
+    })
+  }
 }
 
 export const apiClient = new ApiClient()

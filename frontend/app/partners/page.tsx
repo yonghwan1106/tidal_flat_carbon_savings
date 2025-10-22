@@ -225,7 +225,10 @@ export default function PartnersPage() {
                   </div>
                 </div>
 
-                <button className="mt-4 w-full bg-gradient-to-r from-primary to-secondary text-white py-2 rounded-lg hover:opacity-90 transition font-semibold">
+                <button
+                  onClick={() => router.push('/payment')}
+                  className="mt-4 w-full bg-gradient-to-r from-primary to-secondary text-white py-2 rounded-lg hover:opacity-90 transition font-semibold"
+                >
                   포인트 사용하기
                 </button>
               </div>

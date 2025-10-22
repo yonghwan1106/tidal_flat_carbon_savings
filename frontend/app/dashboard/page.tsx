@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/api'
+import GuideTour from '@/components/GuideTour'
 
 interface DashboardStats {
   tidal_flat_health: number
@@ -29,6 +30,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [rankings, setRankings] = useState<Ranking[]>([])
   const [loading, setLoading] = useState(true)
+  const [runTour, setRunTour] = useState(false)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -49,11 +51,26 @@ export default function DashboardPage() {
 
       setStats(statsData)
       setRankings(rankingsData.rankings || [])
+
+      // 첫 방문 시 자동으로 투어 시작
+      const hasSeenTour = localStorage.getItem('hasSeenDashboardTour')
+      if (!hasSeenTour) {
+        setTimeout(() => setRunTour(true), 500)
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleTourComplete = () => {
+    localStorage.setItem('hasSeenDashboardTour', 'true')
+    setRunTour(false)
+  }
+
+  const handleStartTour = () => {
+    setRunTour(true)
   }
 
   const handleLogout = () => {
@@ -101,6 +118,16 @@ export default function DashboardPage() {
             <p className="text-gray-600">대시보드</p>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={handleStartTour}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg transition"
+              title="가이드 투어 시작"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              가이드 투어
+            </button>
             <div className="text-right">
               <p className="font-semibold">{userInfo?.name}</p>
               <p className="text-sm text-primary font-bold">
@@ -125,7 +152,7 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* 갯벌 건강도 */}
-        <div className="mb-8">
+        <div className="mb-8 dashboard-health">
           <div className="bg-gradient-to-br from-blue-500 to-green-500 text-white rounded-2xl p-8">
             <div className="flex items-center justify-between">
               <div>
@@ -171,7 +198,7 @@ export default function DashboardPage() {
         </div>
 
         {/* 통계 카드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 dashboard-stats">
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-gray-600">총 사용자</p>
@@ -226,7 +253,7 @@ export default function DashboardPage() {
         </div>
 
         {/* 랭킹 테이블 */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8 dashboard-rankings">
           <h3 className="text-xl font-bold mb-4">포인트 랭킹 TOP 10</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -273,6 +300,29 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* AI 리포트 배너 */}
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-8 mb-8 text-white ai-report-banner">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-2xl font-bold mb-2">🤖 AI 환경 기여 리포트</h3>
+              <p className="text-lg opacity-90 mb-4">
+                Claude AI가 분석한 나만의 환경 스토리를 확인하세요!
+              </p>
+              <button
+                onClick={() => router.push('/ai-report')}
+                className="px-8 py-3 bg-white text-purple-600 rounded-lg hover:bg-gray-100 transition font-bold"
+              >
+                AI 리포트 생성하기 ✨
+              </button>
+            </div>
+            <div className="hidden md:block">
+              <svg className="w-32 h-32 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
         {/* 하단 네비게이션 */}
         <div className="flex justify-center gap-4">
           <button
@@ -295,6 +345,9 @@ export default function DashboardPage() {
           </button>
         </div>
       </main>
+
+      {/* 가이드 투어 */}
+      <GuideTour runTour={runTour} onComplete={handleTourComplete} />
     </div>
   )
 }

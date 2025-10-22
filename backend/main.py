@@ -6,6 +6,7 @@ from routers.activities import router as activities_router
 from routers.users import router as users_router
 from routers.partners import router as partners_router
 from routers.dashboard import router as dashboard_router
+from routers.ai import router as ai_router
 
 # Load environment variables
 load_dotenv()
@@ -43,6 +44,7 @@ app.include_router(activities_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(partners_router, prefix="/api")
 app.include_router(dashboard_router, prefix="/api")
+app.include_router(ai_router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn
