@@ -15,7 +15,7 @@ export default function LoginPage() {
   useEffect(() => {
     // 이미 로그인되어 있으면 대시보드로 리다이렉트
     if (isAuthenticated) {
-      router.push('/activities')
+      router.push('/dashboard')
     }
 
     // 데모 계정 목록 가져오기
@@ -38,7 +38,7 @@ export default function LoginPage() {
 
     try {
       await login(userId)
-      router.push('/activities')
+      router.push('/dashboard')
     } catch (err: any) {
       setError(err.message || '로그인에 실패했습니다.')
     } finally {
