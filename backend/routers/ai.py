@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from database import get_db
 import os
 from anthropic import Anthropic
-from auth import get_current_user
+from core.auth import get_current_user
 
 router = APIRouter(prefix="/ai", tags=["ai"])
 
