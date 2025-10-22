@@ -44,13 +44,20 @@ async def get_dashboard_stats():
             if p.get("participation_date", "").startswith(current_month)
         ))
 
-        # 갯벌 건강도 계산 (참여율 기반)
-        # 공식: (이번 달 활동 사용자 / 전체 사용자) * 100
-        if total_users > 0:
-            participation_rate = (active_users_month / total_users) * 100
-            tidal_flat_health = min(100, int(participation_rate * 1.5))  # 1.5배로 조정
+        # 갯벌 건강도 계산 (전체 활동 기반으로 더 현실적인 값 제공)
+        # 데모를 위해 전체 참여 데이터를 기반으로 계산
+        if total_users > 0 and total_participations > 0:
+            # 전체 참여율 기반 계산
+            avg_participation = total_participations / total_users
+            # 평균 참여 횟수에 따라 건강도 산정 (1회당 20점, 최대 100점)
+            base_health = min(100, int(avg_participation * 20))
+            # 활동 다양성 보너스 (활동 수가 많을수록 건강도 상승)
+            activity_bonus = min(15, total_activities * 3)
+            tidal_flat_health = min(100, base_health + activity_bonus)
+            # 최소 건강도 보장 (데모용)
+            tidal_flat_health = max(65, tidal_flat_health)
         else:
-            tidal_flat_health = 0
+            tidal_flat_health = 70  # 기본값
 
         return {
             "tidal_flat_health": tidal_flat_health,

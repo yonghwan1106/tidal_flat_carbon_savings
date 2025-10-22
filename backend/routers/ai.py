@@ -11,7 +11,19 @@ router = APIRouter(prefix="/ai", tags=["ai"])
 # Claude API 클라이언트 지연 로딩
 def get_anthropic_client():
     from anthropic import Anthropic
-    return Anthropic(api_key=os.getenv("CLAUDE_API_KEY"))
+    import httpx
+
+    api_key = os.getenv("CLAUDE_API_KEY")
+    if not api_key:
+        raise ValueError("CLAUDE_API_KEY environment variable not set")
+
+    # httpx 클라이언트를 명시적으로 생성 (proxies 문제 방지)
+    http_client = httpx.Client(timeout=60.0)
+
+    return Anthropic(
+        api_key=api_key,
+        http_client=http_client
+    )
 
 @router.post("/generate-report")
 async def generate_ai_report(current_user: str = Depends(get_current_user)):
