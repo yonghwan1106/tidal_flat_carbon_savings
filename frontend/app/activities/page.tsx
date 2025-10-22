@@ -80,6 +80,12 @@ export default function ActivitiesPage() {
               소개
             </button>
             <button
+              onClick={() => router.push('/partners')}
+              className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
+            >
+              제휴처
+            </button>
+            <button
               onClick={() => router.push('/dashboard')}
               className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
             >

@@ -42,6 +42,12 @@ export default function AboutPage() {
                 >
                   활동 목록
                 </button>
+                <button
+                  onClick={() => router.push('/partners')}
+                  className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
+                >
+                  제휴처
+                </button>
                 <div className="hidden lg:block text-right px-4 py-2 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border-2 border-primary-200">
                   <p className="font-semibold text-gray-800">{userInfo?.name}</p>
                   <p className="text-sm font-bold gradient-text">

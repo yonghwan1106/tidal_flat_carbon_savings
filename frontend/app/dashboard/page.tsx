@@ -126,6 +126,12 @@ export default function DashboardPage() {
               소개
             </button>
             <button
+              onClick={() => router.push('/partners')}
+              className="hidden md:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium rounded-lg hover:bg-primary-50"
+            >
+              제휴처
+            </button>
+            <button
               onClick={handleStartTour}
               className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg rounded-xl transition-all duration-300 hover:scale-105"
               title="가이드 투어 시작"

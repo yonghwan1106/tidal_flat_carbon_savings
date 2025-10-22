@@ -101,9 +101,23 @@ export default function PaymentPage() {
                 <p className="text-sm text-gray-600">탄소 포인트 사용하기</p>
               </div>
             </div>
-            <div className="text-right px-4 py-2 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border-2 border-primary-200">
-              <p className="text-sm text-gray-700 font-medium">보유 포인트</p>
-              <p className="text-xl font-bold gradient-text">{userInfo.total_points.toLocaleString()} 포인트</p>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
+              >
+                대시보드
+              </button>
+              <button
+                onClick={() => router.push('/partners')}
+                className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
+              >
+                제휴처
+              </button>
+              <div className="text-right px-4 py-2 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border-2 border-primary-200">
+                <p className="text-sm text-gray-700 font-medium">보유 포인트</p>
+                <p className="text-xl font-bold gradient-text">{userInfo.total_points.toLocaleString()} 포인트</p>
+              </div>
             </div>
           </div>
         </div>
