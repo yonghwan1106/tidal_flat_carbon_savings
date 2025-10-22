@@ -68,6 +68,18 @@ export default function ActivitiesPage() {
               <p className="text-sm text-gray-600">환경 활동 참여하기</p>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => router.push('/about')}
+                className="px-4 py-2 text-sm text-gray-700 hover:text-primary transition font-medium"
+              >
+                소개
+              </button>
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="px-4 py-2 text-sm text-gray-700 hover:text-primary transition font-medium"
+              >
+                대시보드
+              </button>
               <div className="text-right">
                 <p className="text-sm font-semibold">{user?.name}</p>
                 <p className="text-xs text-gray-600">

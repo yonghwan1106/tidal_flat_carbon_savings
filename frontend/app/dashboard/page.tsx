@@ -119,6 +119,12 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-4">
             <button
+              onClick={() => router.push('/about')}
+              className="px-4 py-2 text-gray-700 hover:text-primary transition font-medium"
+            >
+              소개
+            </button>
+            <button
               onClick={handleStartTour}
               className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg transition"
               title="가이드 투어 시작"
