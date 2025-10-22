@@ -7,6 +7,7 @@ import json
 import os
 from typing import List, Dict, Optional
 from core.config import settings
+from datetime import datetime, timedelta
 
 class SheetsDatabase:
     """Google Sheets를 데이터베이스로 사용하기 위한 클래스"""
@@ -14,6 +15,9 @@ class SheetsDatabase:
     def __init__(self):
         self.client = None
         self.spreadsheet = None
+        # 캐싱 추가 (API 할당량 초과 방지)
+        self._cache = {}
+        self._cache_timeout = 300  # 5분 캐시
         self._connect()
 
     def _connect(self):
@@ -50,10 +54,49 @@ class SheetsDatabase:
         except gspread.exceptions.WorksheetNotFound:
             raise ValueError(f"Sheet '{sheet_name}' not found")
 
+    def _is_cache_valid(self, cache_key: str) -> bool:
+        """캐시가 유효한지 확인"""
+        if cache_key not in self._cache:
+            return False
+
+        cache_time = self._cache[cache_key].get('timestamp')
+        if not cache_time:
+            return False
+
+        # 캐시 만료 시간 확인
+        expiry = cache_time + timedelta(seconds=self._cache_timeout)
+        return datetime.now() < expiry
+
+    def _get_from_cache(self, cache_key: str):
+        """캐시에서 데이터 가져오기"""
+        if self._is_cache_valid(cache_key):
+            return self._cache[cache_key]['data']
+        return None
+
+    def _set_cache(self, cache_key: str, data):
+        """캐시에 데이터 저장"""
+        self._cache[cache_key] = {
+            'data': data,
+            'timestamp': datetime.now()
+        }
+
     def get_all_records(self, sheet_name: str) -> List[Dict]:
-        """시트의 모든 레코드를 딕셔너리 리스트로 반환"""
+        """시트의 모든 레코드를 딕셔너리 리스트로 반환 (캐싱 적용)"""
+        cache_key = f"all_records_{sheet_name}"
+
+        # 캐시 확인
+        cached_data = self._get_from_cache(cache_key)
+        if cached_data is not None:
+            return cached_data
+
+        # 캐시 미스 - Google Sheets에서 읽기
         ws = self.get_worksheet(sheet_name)
-        return ws.get_all_records()
+        data = ws.get_all_records()
+
+        # 캐시 저장
+        self._set_cache(cache_key, data)
+
+        return data
 
     def get_record_by_id(self, sheet_name: str, id_column: str, id_value: str) -> Optional[Dict]:
         """ID로 특정 레코드 찾기"""
@@ -62,6 +105,12 @@ class SheetsDatabase:
             if str(record.get(id_column)) == str(id_value):
                 return record
         return None
+
+    def _invalidate_cache(self, sheet_name: str):
+        """특정 시트의 캐시 무효화"""
+        cache_key = f"all_records_{sheet_name}"
+        if cache_key in self._cache:
+            del self._cache[cache_key]
 
     def add_record(self, sheet_name: str, data: Dict) -> bool:
         """새 레코드 추가"""
@@ -72,6 +121,8 @@ class SheetsDatabase:
             # 데이터를 헤더 순서에 맞게 정렬
             row = [data.get(header, '') for header in headers]
             ws.append_row(row)
+            # 캐시 무효화
+            self._invalidate_cache(sheet_name)
             return True
         except Exception as e:
             print(f"레코드 추가 실패: {e}")
@@ -99,6 +150,8 @@ class SheetsDatabase:
                         if key in headers:
                             col_index = headers.index(key) + 1  # 1-based
                             ws.update_cell(idx, col_index, value)
+                    # 캐시 무효화
+                    self._invalidate_cache(sheet_name)
                     return True
 
             print(f"Record with {id_column}={id_value} not found")
