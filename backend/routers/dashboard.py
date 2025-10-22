@@ -44,6 +44,9 @@ async def get_dashboard_stats():
             if p.get("participation_date", "").startswith(current_month)
         ))
 
+        # 참여율 계산 (이번 달 활동 사용자 / 총 사용자)
+        participation_rate = (active_users_month / total_users * 100) if total_users > 0 else 0
+
         # 갯벌 건강도 계산 (전체 활동 기반으로 더 현실적인 값 제공)
         # 데모를 위해 전체 참여 데이터를 기반으로 계산
         if total_users > 0 and total_participations > 0:
@@ -66,7 +69,7 @@ async def get_dashboard_stats():
             "total_points": int(total_points),
             "total_participations": total_participations,
             "active_users_month": active_users_month,
-            "participation_rate": round(participation_rate, 1) if total_users > 0 else 0
+            "participation_rate": round(participation_rate, 1)
         }
 
     except Exception as e:
