@@ -1,4 +1,10 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+
 export default function Home() {
+  const router = useRouter()
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-8">
       <div className="max-w-4xl mx-auto text-center">
@@ -16,7 +22,10 @@ export default function Home() {
         </p>
 
         <div className="space-y-4">
-          <button className="bg-primary hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors">
+          <button
+            onClick={() => router.push('/login')}
+            className="bg-primary hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors"
+          >
             데모 체험하기
           </button>
           <p className="text-sm text-gray-500">
