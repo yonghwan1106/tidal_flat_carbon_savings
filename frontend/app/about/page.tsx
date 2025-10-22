@@ -5,10 +5,10 @@ import { useAuth } from '@/contexts/AuthContext'
 
 export default function AboutPage() {
   const router = useRouter()
-  const { isAuthenticated, userInfo } = useAuth()
+  const { isAuthenticated, userInfo, logout } = useAuth()
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token')
+    logout()
     router.push('/login')
   }
 

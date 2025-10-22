@@ -17,7 +17,7 @@ interface Partner {
 
 export default function PartnersPage() {
   const router = useRouter()
-  const { isAuthenticated, userInfo } = useAuth()
+  const { isAuthenticated, userInfo, logout } = useAuth()
   const [partners, setPartners] = useState<Partner[]>([])
   const [filteredPartners, setFilteredPartners] = useState<Partner[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('전체')
@@ -56,7 +56,7 @@ export default function PartnersPage() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token')
+    logout()
     router.push('/login')
   }
 

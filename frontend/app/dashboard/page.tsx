@@ -26,7 +26,7 @@ interface Ranking {
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { isAuthenticated, userInfo } = useAuth()
+  const { isAuthenticated, userInfo, logout } = useAuth()
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [rankings, setRankings] = useState<Ranking[]>([])
   const [loading, setLoading] = useState(true)
@@ -74,7 +74,7 @@ export default function DashboardPage() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token')
+    logout()
     router.push('/login')
   }
 

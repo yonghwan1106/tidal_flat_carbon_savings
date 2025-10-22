@@ -27,7 +27,7 @@ interface Transaction {
 
 export default function MyPage() {
   const router = useRouter()
-  const { isAuthenticated, userInfo } = useAuth()
+  const { isAuthenticated, userInfo, logout } = useAuth()
   const [activeTab, setActiveTab] = useState<'participations' | 'transactions'>('participations')
   const [participations, setParticipations] = useState<Participation[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -60,7 +60,7 @@ export default function MyPage() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('access_token')
+    logout()
     router.push('/login')
   }
 
