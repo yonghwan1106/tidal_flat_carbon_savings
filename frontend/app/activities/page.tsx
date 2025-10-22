@@ -46,6 +46,11 @@ export default function ActivitiesPage() {
     }
   }
 
+  const handleLogout = () => {
+    logout()
+    router.push('/')
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -104,7 +109,7 @@ export default function ActivitiesPage() {
               마이페이지
             </button>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl transition-all duration-300 hover:scale-105 font-medium"
             >
               로그아웃

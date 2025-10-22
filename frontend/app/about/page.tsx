@@ -9,7 +9,7 @@ export default function AboutPage() {
 
   const handleLogout = () => {
     logout()
-    router.push('/login')
+    router.push('/')
   }
 
   return (

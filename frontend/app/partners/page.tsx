@@ -57,7 +57,7 @@ export default function PartnersPage() {
 
   const handleLogout = () => {
     logout()
-    router.push('/login')
+    router.push('/')
   }
 
   const getCategoryIcon = (category: string) => {

@@ -61,7 +61,7 @@ export default function MyPage() {
 
   const handleLogout = () => {
     logout()
-    router.push('/login')
+    router.push('/')
   }
 
   if (loading) {
