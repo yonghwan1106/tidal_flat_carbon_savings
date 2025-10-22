@@ -82,25 +82,28 @@ export default function PaymentPage() {
   if (!userInfo) return null
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* 헤더 */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
+      <header className="bg-white/80 backdrop-blur-md shadow-soft border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => router.back()}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-primary-600 transition-colors hover:scale-110 transition-transform"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <h1 className="text-2xl font-bold text-primary">포인트 결제</h1>
+              <div>
+                <h1 className="text-2xl font-bold gradient-text">포인트 결제</h1>
+                <p className="text-sm text-gray-600">탄소 포인트 사용하기</p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-gray-600">보유 포인트</p>
-              <p className="text-xl font-bold text-primary">{userInfo.total_points.toLocaleString()} CP</p>
+            <div className="text-right px-4 py-2 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border-2 border-primary-200">
+              <p className="text-sm text-gray-700 font-medium">보유 포인트</p>
+              <p className="text-xl font-bold gradient-text">{userInfo.total_points.toLocaleString()} 포인트</p>
             </div>
           </div>
         </div>

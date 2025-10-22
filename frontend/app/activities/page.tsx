@@ -58,47 +58,51 @@ export default function ActivitiesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* 헤더 */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-primary">갯벌 탄소예금</h1>
-              <p className="text-sm text-gray-600">환경 활동 참여하기</p>
+      <header className="bg-white/80 backdrop-blur-md shadow-soft border-b border-gray-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="text-2xl font-bold gradient-text hover:scale-105 transition-transform cursor-pointer"
+            >
+              갯벌 탄소예금
+            </button>
+            <span className="hidden md:block text-gray-400">|</span>
+            <p className="hidden md:block text-gray-700 font-medium">환경 활동</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => router.push('/about')}
+              className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
+            >
+              소개
+            </button>
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="hidden lg:block px-4 py-2 text-gray-700 hover:text-primary-600 transition font-medium"
+            >
+              대시보드
+            </button>
+            <div className="hidden lg:block text-right px-4 py-2 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl border-2 border-primary-200">
+              <p className="font-semibold text-gray-800">{user?.name}</p>
+              <p className="text-sm font-bold gradient-text">
+                {userInfo?.total_points?.toLocaleString() || 0} 포인트
+              </p>
             </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => router.push('/about')}
-                className="px-4 py-2 text-sm text-gray-700 hover:text-primary transition font-medium"
-              >
-                소개
-              </button>
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="px-4 py-2 text-sm text-gray-700 hover:text-primary transition font-medium"
-              >
-                대시보드
-              </button>
-              <div className="text-right">
-                <p className="text-sm font-semibold">{user?.name}</p>
-                <p className="text-xs text-gray-600">
-                  {userInfo?.total_points.toLocaleString() || 0} 포인트
-                </p>
-              </div>
-              <button
-                onClick={() => router.push('/my')}
-                className="px-4 py-2 text-sm bg-primary text-white hover:bg-green-700 rounded-lg transition"
-              >
-                마이페이지
-              </button>
-              <button
-                onClick={logout}
-                className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition"
-              >
-                로그아웃
-              </button>
-            </div>
+            <button
+              onClick={() => router.push('/my')}
+              className="px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:shadow-lg rounded-xl transition-all duration-300 hover:scale-105 font-medium"
+            >
+              마이페이지
+            </button>
+            <button
+              onClick={logout}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-xl transition-all duration-300 hover:scale-105 font-medium"
+            >
+              로그아웃
+            </button>
           </div>
         </div>
       </header>
